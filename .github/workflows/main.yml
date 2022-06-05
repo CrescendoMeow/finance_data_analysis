@@ -1,0 +1,30 @@
+name: collect data
+
+on:
+  schedule:
+    - cron: '15 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 #install the python needed
+      - name: collect sp500 data
+        run: |
+          python analyse_sp500.py
+      - name: Commit files
+        run: |
+          git config --local user.name actions-user
+          git config --local user.email "actions@github.com"
+          git add *.csv
+          git commit -am "update sp500 data"
+          git push origin main
+        env:
+          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+          username: github-actions
+
