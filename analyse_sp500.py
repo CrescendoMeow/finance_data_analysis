@@ -1,4 +1,4 @@
-# wget -O sp500_$(date "+%Y%m%d").html https://www.slickcharts.com/sp500
+sp500_source_url = "https://www.slickcharts.com/sp500"
 
 from bs4 import BeautifulSoup
 from datetime import date
@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 today = date.today()
 today_string = "%d%02d%02d"%(today.year, today.month, today.day)
 
-req = Request("https://www.slickcharts.com/sp500", headers={'User-Agent': 'Mozilla/5.0'})
+req = Request(sp500_source_url, headers={'User-Agent': 'Mozilla/5.0'})
 soup = BeautifulSoup(urlopen(req).read(), features="lxml")
 items = soup.find_all('tr')
 
